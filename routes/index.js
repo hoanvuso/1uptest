@@ -24,6 +24,15 @@ router.get( '/login', function( req, res ) {
     } );
 } );
 
+//redirect to login if user GET /, register, authenticate
+router.get([
+  '/', '',
+  '/register',
+  '/authenticate'
+], function(req, res) {
+  res.redirect('/login');
+});
+
 router.use( function( req, res, next ) {
 
     // check header or url parameters or post parameters for token
