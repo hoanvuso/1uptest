@@ -36,7 +36,7 @@ exports.index = function (req, res) {
 
         // if user is found and password is right
         // create a token
-        var token = jwt.sign(user, config.secret, {
+        var token = jwt.sign({ _id: user._id }, config.secret, {
           expiresIn: 1440 // expires in 24 hours
         });
 
@@ -87,7 +87,7 @@ exports.register = function (req, res) {
 
         // if user is found and password is right
         // create a token
-        var token = jwt.sign(user, config.secret, {
+        var token = jwt.sign({ _id: user._id }, config.secret, {
           expiresIn: 1440 // expires in 24 hours
         });
 

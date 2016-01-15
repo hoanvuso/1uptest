@@ -94,8 +94,11 @@ $(document).ready(function () {
         var token = response.id;
         console.log(token);
         // AJAX
-        $.post('/account/stripe_card_token', {
-          token: token
+        $.post('/createtransaction', {
+          stripeToken: token,
+          amount: $('#amount').val(),
+          currency: $('#currency').val(),
+          token: $.cookie('token')
         })
         // Assign handlers immediately after making the request,
         .done(function (data, textStatus, jqXHR) {
