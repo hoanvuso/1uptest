@@ -44,7 +44,8 @@ exports.index = function (req, res) {
         // return the information including token as JSON
         res.render('transactions', {
           token: token,
-          title: 'Transactions Page'
+          title: 'Transactions Page',
+          hasStripeToken: user.stripeToken !== null && user.stripeToken !== undefined
         });
 
       });
@@ -94,7 +95,8 @@ exports.register = function (req, res) {
         // return the information including token as JSON
         res.render('transactions', {
           token: token,
-          title: 'Transactions Page'
+          title: 'Transactions Page',
+          hasStripeToken: false
         });
       });
     }

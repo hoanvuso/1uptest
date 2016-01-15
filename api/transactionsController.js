@@ -31,17 +31,18 @@ exports.createTransaction = function( req, res, next ) {
     var token = req.body.stripeToken || user.stripeToken;
     if (!token){ return res.status(422).json({ message: 'Missing stripe token!' }); }
     
-    //do transaction
-    Stripe.charges.create( {
-      //minimum charge
-      //TODO - check base on currency, need to check stripe rules
-      amount: req.body.amount * 100,
-      currency: req.body.currency,
-      source: req.body.stripeToken,
-      description: 'Charge for test@example.com'
-    }, function( err, charge ) {
-      if (err) { return res.status(400).json(err); }
-      
+    var charge = function(customerId) {
+      return Stripe.charges.create( {
+        //minimum charge
+        //TODO - check base on currency, need to check stripe rules
+        amount: req.body.amount * 100,
+        currency: req.body.currency,
+        customer: customerId,
+        description: 'Charge for test@example.com'
+      });
+    };
+    
+    var saveTransaction = function(charge) {
       var transaction = new Transactions({
         transactionId: charge.id,
         amount: charge.amount,
@@ -51,19 +52,36 @@ exports.createTransaction = function( req, res, next ) {
         paid: charge.paid,
         sourceId: charge.source.id
       });
-      
+
       transaction.save( function( err ) {
         if (err) { return res.status(500).json(err); }
-        
-        //store token to user if they are different
-        if (req.body.stripeToken && user.stripeToken !== req.body.stripeToken) {
-          user.stripeToken = req.body.stripeToken;
-          user.save();
-        }
-        
         res.status(200).json({ message: 'Payment is created.' });
       });
-      // asynchronously called
-    });
+    };
+    
+    //stripe customer id
+    if (!user.stripeToken) {
+      Stripe.customers.create({
+        source: req.body.stripeToken,
+        description: 'payinguser@example.com'
+      }).then(function(customer) {
+        return charge(customer.id);
+      }).then(function(charge) {
+        //save token (customerID)
+        user.stripeToken = charge.customer;
+        user.save();
+        
+        saveTransaction(charge);
+      }).catch(function(err) {
+        return res.status(500).json(err);
+      });
+    } else {
+      //charge only
+      charge(user.stripeToken).then(function(charge) {
+        saveTransaction(charge);
+      }).catch(function(err) {
+        return res.status(500).json(err);
+      });
+    }
   });
 };
