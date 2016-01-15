@@ -40,6 +40,7 @@ exports.index = function (req, res) {
           expiresIn: 1440 // expires in 24 hours
         });
 
+        res.cookie('token', token);
         // return the information including token as JSON
         res.render('transactions', {
           token: token,

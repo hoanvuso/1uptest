@@ -1,19 +1,73 @@
-<h1>Transactions page</h1>
-<p>Your token:<span id="token"><%=token%></span></p>
+<div class="container">
+  <h1>Transactions page</h1>
+  <!--          <p>Your token:<span id="token"><%=token%></span></p>-->
 
-<h2>Create Stripe Payments</h2>
-
-<label for="amount">Amount:</label>
-<input type="number" name="amount" id="amount"><br>
-<label for="currency">Currency: </label>
-<input type="text" name="currency" id="currency"><br>
-<label for="cardnumber">Card number </label>
-<input type="text" name="customerid" id="cardnumber" class="card-number"><br>
-<label for="cvc">CVC: </label>
-<input type="number" name="cvc" id="cvc" class="card-cvc"><br>
-<label for="card-expiry-month">Expired Month: </label>
-<input type="number" name="card-expiry-month" id="card-expiry-month" class="card-expiry-month"><br>
-<label for="card-expiry-year">Expired Year: </label>
-<input type="number" name="card-expiry-year" id="card-expiry-year" class="card-expiry-year"><br>
-<p class="payment-errors"></p>
-<input type="button" class="submittransaction" id="submittransaction" value="Submit">
+  <h2>Create Stripe Payments</h2>
+  <div class="row">
+    <div class="col-xs-12 col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><img class="pull-right" src="http://i76.imgup.net/accepted_c22e0.png">Payment Details</h3>
+        </div>
+        <div class="panel-body">
+          <form role="form" id="payment-form">
+            <div class="row">
+              <div class="col-xs-7 col-md-7">
+                <div class="form-group">
+                  <label for="amount">Amount</label>
+                  <input type="text" class="form-control" name="amount" id="amount" placeholder="Amount" required />
+                </div>
+              </div>
+              <div class="col-xs-5 col-md-5 pull-right">
+                <div class="form-group">
+                  <label for="currency">Currency</label>
+                  <input type="text" class="form-control" name="currency" id="currency" placeholder="USD, EUR" required />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group">
+                  <label for="cardNumber">CARD NUMBER</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="cardNumber" placeholder="Valid Card Number" required autofocus data-stripe="number" />
+                    <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                  </div>
+                </div>                            
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-7 col-md-7">
+                <div class="form-group">
+                  <label for="expMonth">EXPIRATION DATE</label>
+                  <div class="col-xs-6 col-lg-6 pl-ziro">
+                    <input type="text" class="form-control" name="expMonth" placeholder="MM" required data-stripe="exp_month" />
+                  </div>
+                  <div class="col-xs-6 col-lg-6 pl-ziro">
+                    <input type="text" class="form-control" name="expYear" placeholder="YY" required data-stripe="exp_year" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-5 col-md-5 pull-right">
+                <div class="form-group">
+                  <label for="cvCode">CV CODE</label>
+                  <input type="password" class="form-control" name="cvCode" placeholder="CV" required data-stripe="cvc" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <button class="btn btn-success btn-lg btn-block" type="submit">Start Subscription</button>
+              </div>
+            </div>
+            <div class="row" style="display:none;">
+              <div class="col-xs-12">
+                <p class="payment-errors"></p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,7 @@ router.post( '/register', authController.register );
 
 //login
 router.get( '/login', function( req, res ) {
+  //if valid token, redirect to transaction page
     res.render( 'login', {
         title: 'Login'
     } );
