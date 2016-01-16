@@ -91,7 +91,7 @@ exports.register = function (req, res) {
         var token = jwt.sign({ _id: user._id }, config.secret, {
           expiresIn: 1440 // expires in 24 hours
         });
-
+        res.cookie('token', token);
         // return the information including token as JSON
         res.render('transactions', {
           token: token,
